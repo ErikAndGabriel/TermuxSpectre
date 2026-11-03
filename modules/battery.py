@@ -19,3 +19,5 @@ def battery_status():
            return "comand error"
     except FileNotFoundError:
            return "Error Termux-api battery not found"
+    except Exception as Error:
+           return Error
