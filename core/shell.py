@@ -1,7 +1,7 @@
 from core.connection import Connection
 from core.executor import CommandExecutor
 from config.settings import BUFFER_SIZE
-from modules.baterry import battery_status
+from modules.battery import battery_status
 from utils.colors import info
 
 class Shell:
