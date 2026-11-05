@@ -1,5 +1,5 @@
 import socket
-from config.settings import BUFFER_SIZE  # corrija o nome
+from config.settings import BUFFER_SIZE  
 
 class Connection:
     def __init__(self, host, port):
