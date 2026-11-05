@@ -1,7 +1,7 @@
 import subprocess
 
 NAME = "/phone"
-DESC = "telefone: /phone call <numero> | sms <numero> <texto> | contacts | logs"
+DESC = "telefone: /phone call|sms|contacts|logs|inbox|cell"
 
 
 def _run(args_list, timeout=15):
@@ -25,7 +25,7 @@ def _run(args_list, timeout=15):
 def run(shell, args):
     partes = args.strip().split(None, 1)
     if not partes:
-        shell.socket.send(b"uso: /phone call|sms|contacts|logs\n")
+        shell.socket.send(b"uso: /phone call|sms|contacts|logs|inbox|cell\n")
         return
 
     sub = partes[0].lower()
@@ -39,6 +39,10 @@ def run(shell, args):
         _contacts(shell)
     elif sub == "logs":
         _logs(shell, resto)
+    elif sub == "inbox":
+        _inbox(shell, resto)
+    elif sub == "cell":
+        _cell(shell)
     else:
         shell.socket.send(f"subcomando desconhecido: {sub}\n".encode())
 
@@ -88,3 +92,25 @@ def _logs(shell, args):
         shell.socket.send((out + "\n").encode())
     else:
         shell.socket.send(f"erro: {err or rc}\n".encode())
+
+
+def _inbox(shell, args):
+    limite = args.strip() or "10"
+    try:
+        int(limite)
+    except ValueError:
+        shell.socket.send(b"uso: /phone inbox [limite]\n")
+        return
+    rc, out, err = _run(["termux-sms-list", "-l", limite, "-n", "-d"])
+    if rc == 0:
+        shell.socket.send((out + "\n").encode())
+    else:
+        shell.socket.send(f"erro: {err or out or rc}\n".encode())
+
+
+def _cell(shell):
+    rc, out, err = _run(["termux-telephony-cellinfo"])
+    if rc == 0:
+        shell.socket.send((out + "\n").encode())
+    else:
+        shell.socket.send(f"erro: {err or out or rc}\n".encode())
