@@ -9,19 +9,6 @@ módulo em `modules/`, carregado automaticamente.
 
 ---
 
-## Estrutura
-
-TermuxSpectre/
-├── main.py
-├── recv.py
-├── config/settings.py
-├── core/shell.py
-└── modules/
-    ├── __init__.py
-    └── (um arquivo por comando)
-
----
-
 ## Instalação
 
 pkg update && pkg upgrade
