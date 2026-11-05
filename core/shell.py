@@ -72,4 +72,4 @@ class ShellTcp:
             self.socket = None
 
 
-Shell = ShellTcp   # alias, pra funcionar com "from core.shell import Shell"
+Shell = ShellTcp  
