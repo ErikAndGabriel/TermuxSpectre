@@ -1,5 +1,5 @@
 from time import sleep
-from core.shell import Shell
+from core.shell import ShellTcp
 from config.settings import HOST, PORT
 
 def main():
