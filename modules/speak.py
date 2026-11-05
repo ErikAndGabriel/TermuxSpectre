@@ -1,24 +1,32 @@
 import subprocess
 
-def text_speak(data):
-    try:
-      comand = subprocess.run(
-                  ["termux-tts-speak", data],
-                  capture_output=True,
-                  text=True,
-                  check=True,
-                  timeout=5
-               )
-      if comando.returncode == 0:
-         return comand.stdout
-      else:
-         return comand.stderr
-    except subprocess.CalledProcessError:
-         return "error comand failed"
-    except subprocess.TimeoutExpired:
-         return "error timeout"
-    except FileNotFoundError:
-         return "not found termux-api"
-    except Exception as Error:
-         return Error
+NAME = "/speak"
+DESC = "fala um texto: /speak <texto>"
 
+
+def run(shell, args):
+    texto = args.strip()
+    if not texto:
+        shell.socket.send(b"uso: /speak <texto>\n")
+        return
+
+    try:
+        cmd = subprocess.run(
+            ["termux-tts-speak", texto],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            stdin=subprocess.DEVNULL,
+        )
+        if cmd.returncode == 0:
+            out = "ok: falando\n"
+        else:
+            out = f"erro: {cmd.stderr or cmd.stdout or cmd.returncode}\n"
+    except FileNotFoundError:
+        out = "erro: termux-tts-speak nao instalado (pkg install termux-api)\n"
+    except subprocess.TimeoutExpired:
+        out = "erro: timeout\n"
+    except Exception as e:
+        out = f"erro: {e}\n"
+
+    shell.socket.send(out.encode())
