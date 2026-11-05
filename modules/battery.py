@@ -1,23 +1,22 @@
 import subprocess
 
-def battery_status():
+NAME = "/battery"
+DESC = "status da bateria"
+
+
+def run(shell, args):
     try:
-       comand = subprocess.run(
-                  ["termux-battery-status"],
-                  capture_output=True,
-                  text=True,
-                  check=True,
-                  timeout=5
-                )
-       if comand.returncode == 0:
-          return comand.stdout
-       else:
-          return comand.stderr
-    except subprocess.TimeoutExpired:
-           return "error timeout"
-    except subprocess.CalledProcessError:
-           return "comand error"
+        cmd = subprocess.run(
+            ["termux-battery-status"],
+            capture_output=True, text=True, timeout=5,
+        )
+        out = cmd.stdout if cmd.returncode == 0 else cmd.stderr
     except FileNotFoundError:
-           return "Error Termux-api battery not found"
-    except Exception as Error:
-           return Error
+        out = "Error: termux-battery-status nao instalado"
+    except subprocess.TimeoutExpired:
+        out = "Error: timeout"
+    except Exception as e:
+        out = f"Error: {e}"
+    if not out.endswith("\n"):
+        out += "\n"
+    shell.socket.send(out.encode())
