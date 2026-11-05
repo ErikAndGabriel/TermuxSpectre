@@ -1,6 +1,7 @@
 from time import sleep
-from core.shell import ShellTcp
+from core.shell import Shell
 from config.settings import HOST, PORT
+
 
 def main():
     while True:
@@ -15,7 +16,8 @@ def main():
             print(f"[-] {e}")
             sleep(2)
         finally:
-            shell.conn.close()
+            shell.close()
+
 
 if __name__ == "__main__":
     main()
