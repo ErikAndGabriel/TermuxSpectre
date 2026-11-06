@@ -3,7 +3,7 @@ import subprocess
 import time
 
 NAME = "/dump"
-DESC = "compacta e envia storage: /stiler [dcim|downloads|documents|all]"
+DESC = "compacta e envia storage: /dump [dcim|downloads|documents|all]"
 
 
 def _dirs():
