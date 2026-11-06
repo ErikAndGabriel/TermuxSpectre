@@ -221,11 +221,14 @@ def inferir(portas_abertas):
 
 def servicos(portas_abertas):
     return [f"{p}/{descrever(p)[0]}" for p in portas_abertas]
-
-
 def classificar(portas_abertas):
     grupos = {}
     for p in portas_abertas:
         _, categoria = descrever(p)
         grupos.setdefault(categoria, []).append(p)
     return grupos
+def portas_para_scan():
+    conjunto = set()
+    for combinacao, _, _, _ in COMBINACOES:
+        conjunto.update(combinacao)
+    return sorted(conjunto)
